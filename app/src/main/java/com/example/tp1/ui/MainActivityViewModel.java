@@ -12,11 +12,11 @@ import com.example.tp1.models.ConversionModel;
 public class MainActivityViewModel extends AndroidViewModel {
     private MutableLiveData<Double> rate;
     private MutableLiveData<Double> conversionResult;
+    private MutableLiveData<String> errorMessage;
     private final ConversionModel conversionModel;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-
         conversionModel = new ConversionModel();
     }
 
@@ -24,7 +24,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         if (rate == null) {
             rate = new MutableLiveData<>(1.16);
         }
-
         return rate;
     }
 
@@ -32,48 +31,56 @@ public class MainActivityViewModel extends AndroidViewModel {
         if (conversionResult == null) {
             conversionResult = new MutableLiveData<>();
         }
-
         return conversionResult;
     }
 
+    public LiveData<String> getErrorMessage() {
+        if (errorMessage == null) {
+            errorMessage = new MutableLiveData<>();
+        }
+        return errorMessage;
+    }
+
     public void updateRate(String inputRate) {
-        if (inputRate != null && !inputRate.isEmpty()) {
-            try {
-                double newRate = Double.parseDouble(inputRate);
-                if (rate == null) {
-                    rate = new MutableLiveData<>();
-                }
-                rate.setValue(newRate);
-            } catch (NumberFormatException ignored) {
-            }
+        if (inputRate == null || inputRate.trim().isEmpty()) {
+            errorMessage.setValue("El tipo de cambio no puede estar vacío");
+            return;
+        }
+        try {
+            double newRate = Double.parseDouble(inputRate);
+            rate.setValue(newRate);
+        } catch (NumberFormatException e) {
+            errorMessage.setValue("Formato de número inválido para el tipo de cambio");
         }
     }
 
     public void convert(String amountDolars, String amountEuros, boolean toEuros) {
         Double currentRate = getRate().getValue();
-        if (currentRate == null) return;
+        if (currentRate == null) {
+            errorMessage.setValue("Tipo de cambio no definido");
+            return;
+        }
 
-        double result = 0.0;
-
+        double result;
         try {
             if (toEuros) {
-                if (amountDolars.isEmpty()) return;
-
+                if (amountDolars == null || amountDolars.trim().isEmpty()) {
+                    errorMessage.setValue("Ingrese monto en dólares");
+                    return;
+                }
                 double dolars = Double.parseDouble(amountDolars);
-
                 result = conversionModel.convertToEuros(dolars, currentRate);
             } else {
-                if (amountEuros.isEmpty()) return;
-
+                if (amountEuros == null || amountEuros.trim().isEmpty()) {
+                    errorMessage.setValue("Ingrese monto en euros");
+                    return;
+                }
                 double euros = Double.parseDouble(amountEuros);
-
                 result = conversionModel.convertToDolars(euros, currentRate);
             }
-
-            getConversionResult();
-
             conversionResult.setValue(result);
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException e) {
+            errorMessage.setValue("El valor ingresado no es un número válido");
         }
     }
 }

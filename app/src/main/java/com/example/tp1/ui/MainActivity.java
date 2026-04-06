@@ -22,7 +22,14 @@ public class MainActivity extends AppCompatActivity {
         // Instancia del ViewModel de forma estándar (no con Factory)
         mv = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        // 1. Observar el resultado de la conversión
+        // Observa los errores que manda el ViewModel
+        mv.getErrorMessage().observe(this, errorMsg -> {
+            if (errorMsg != null && !errorMsg.isEmpty()) {
+                Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Observar el resultado de la conversión
         mv.getConversionResult().observe(this, result -> {
             String formattedResult = String.format("%.2f", result);
 
@@ -33,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 2. Observar el tipo de cambio (para mostrar el valor inicial y actualizaciones)
+        // Observar el tipo de cambio (para mostrar el valor inicial y actualizaciones)
         mv.getRate().observe(this, rate -> {
             vb.etConversionValueInput.setText(String.valueOf(rate));
         });
 
-        // 3. Botón para actualizar el tipo de cambio
+        // Botón para actualizar el tipo de cambio
         vb.btChangeConversionValue.setOnClickListener(view -> {
             String strRate = vb.etConversionValueInput.getText().toString();
             if (strRate.isEmpty()) {
@@ -49,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 4. Botón principal para realizar la conversión
+        // Botón para realizar la conversión
         vb.btConvert.setOnClickListener(view -> {
             String strDolars = vb.etDolar.getText().toString();
             String strEuros = vb.etEuro.getText().toString();
             boolean toEuros = vb.rbChangeToEuro.isChecked();
 
-            // Validaciones básicas de campos vacíos según el modo seleccionado
+            // Validaciones básicas de campos vacíos según el modo seleccionado (aunque ya se valida)
             if (toEuros && strDolars.isEmpty()) {
                 vb.etDolar.setError("Ingrese monto en dólares");
                 return;
