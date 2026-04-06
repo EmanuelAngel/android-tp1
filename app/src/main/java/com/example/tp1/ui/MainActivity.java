@@ -1,6 +1,7 @@
 package com.example.tp1.ui;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,12 +17,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         vb = ActivityMainBinding.inflate(getLayoutInflater());
-
-        mv = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MainActivityViewModel.class);
-
         setContentView(vb.getRoot());
 
-        mv.getConversionMutable().observe(this, result -> {
+        // Instancia del ViewModel de forma estándar (no con Factory)
+        mv = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        // 1. Observar el resultado de la conversión
+        mv.getConversionResult().observe(this, result -> {
             String formattedResult = String.format("%.2f", result);
 
             if (vb.rbChangeToEuro.isChecked()) {
@@ -31,14 +33,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 2. Observar el tipo de cambio (para mostrar el valor inicial y actualizaciones)
+        mv.getRate().observe(this, rate -> {
+            vb.etConversionValueInput.setText(String.valueOf(rate));
+        });
+
+        // 3. Botón para actualizar el tipo de cambio
+        vb.btChangeConversionValue.setOnClickListener(view -> {
+            String strRate = vb.etConversionValueInput.getText().toString();
+            if (strRate.isEmpty()) {
+                vb.etConversionValueInput.setError("Ingrese un valor");
+            } else {
+                mv.updateRate(strRate);
+                Toast.makeText(this, "Tipo de cambio actualizado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 4. Botón principal para realizar la conversión
         vb.btConvert.setOnClickListener(view -> {
             String strDolars = vb.etDolar.getText().toString();
             String strEuros = vb.etEuro.getText().toString();
-            String strRate = vb.etConversionValueInput.getText().toString();
-
             boolean toEuros = vb.rbChangeToEuro.isChecked();
 
-            mv.convert(strDolars, strEuros, strRate, toEuros);
+            // Validaciones básicas de campos vacíos según el modo seleccionado
+            if (toEuros && strDolars.isEmpty()) {
+                vb.etDolar.setError("Ingrese monto en dólares");
+                return;
+            }
+
+            if (!toEuros && strEuros.isEmpty()) {
+                vb.etEuro.setError("Ingrese monto en euros");
+                return;
+            }
+
+            if (!vb.rbChangeToEuro.isChecked() && !vb.rbChangeToDolar.isChecked()) {
+                Toast.makeText(this, "Seleccione un tipo de conversión", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mv.convert(strDolars, strEuros, toEuros);
         });
     }
 }
