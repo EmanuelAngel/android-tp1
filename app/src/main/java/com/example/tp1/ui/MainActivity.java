@@ -1,4 +1,4 @@
-package com.example.tp1;
+package com.example.tp1.ui;
 
 import android.os.Bundle;
 
@@ -17,21 +17,28 @@ public class MainActivity extends AppCompatActivity {
 
         vb = ActivityMainBinding.inflate(getLayoutInflater());
 
-        mv = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(
-                MainActivityViewModel.class
-        );
+        mv = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MainActivityViewModel.class);
 
         setContentView(vb.getRoot());
 
-        mv.getConversionMutable().observe(
-                this,
-                value -> vb.etEuro.setText(String.format(value.toString()))
-                );
+        mv.getConversionMutable().observe(this, result -> {
+            String formattedResult = String.format("%.2f", result);
 
-        vb.btConvert.setOnClickListener(
-                view -> {
-                    mv.convert();
-                }
-        );
+            if (vb.rbChangeToEuro.isChecked()) {
+                vb.etEuro.setText(formattedResult);
+            } else if (vb.rbChangeToDolar.isChecked()) {
+                vb.etDolar.setText(formattedResult);
+            }
+        });
+
+        vb.btConvert.setOnClickListener(view -> {
+            String strDolars = vb.etDolar.getText().toString();
+            String strEuros = vb.etEuro.getText().toString();
+            String strRate = vb.etConversionValueInput.getText().toString();
+
+            boolean toEuros = vb.rbChangeToEuro.isChecked();
+
+            mv.convert(strDolars, strEuros, strRate, toEuros);
+        });
     }
 }

@@ -6,114 +6,133 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.MainActivity">
-
-    <TextView
-        android:id="@+id/tvDolar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dólares:"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="127dp" />
-
-    <TextView
-        android:id="@+id/tvEuro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Euros:"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="17dp"
-        tools:layout_editor_absoluteY="239dp" />
-
-    <EditText
-        android:id="@+id/etEuro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="270dp" />
-
-    <EditText
-        android:id="@+id/etDolar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        tools:layout_editor_absoluteX="17dp"
-        tools:layout_editor_absoluteY="157dp" />
 
     <TextView
         android:id="@+id/tvMainTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Conversor de Monedas"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/main_title"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="42dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tvDolar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dollars"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <EditText
+        android:id="@+id/etDolar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@+id/tvDolar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints=""
+         />
+
+    <TextView
+        android:id="@+id/tvEuro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/euros"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/etDolar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/etEuro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@+id/tvEuro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tvConversionValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Valor de Conversión"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="340dp" />
+        android:text="@string/conversion_value_label"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/etEuro"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp" />
 
     <TextView
         android:id="@+id/tvEqualValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$1 ="
-        tools:layout_editor_absoluteX="17dp"
-        tools:layout_editor_absoluteY="373dp" />
+        android:text="@string/one_dollar"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@+id/etConversionValueInput"
+        app:layout_constraintBottom_toBottomOf="@+id/etConversionValueInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etConversionValueInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:hint="@string/conversion_example"
+        app:layout_constraintTop_toBottomOf="@+id/tvConversionValue"
+        app:layout_constraintStart_toEndOf="@+id/tvEqualValue"
+        app:layout_constraintEnd_toStartOf="@+id/btChangeConversionValue"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
 
     <Button
         android:id="@+id/btChangeConversionValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cambiar Valor"
-        android:textColorLink="@color/material_dynamic_neutral20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.889"
+        android:text="@string/change_rate"
+        app:layout_constraintTop_toTopOf="@+id/etConversionValueInput"
+        app:layout_constraintBottom_toBottomOf="@+id/etConversionValueInput"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etConversionValueInput"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="344dp" />
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:id="@+id/rbChangeToDolar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/convert_to_dollars" />
+
+        <RadioButton
+            android:id="@+id/rbChangeToEuro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/convert_to_euros" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/btConvert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Convertir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
+        android:text="@string/convert"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="556dp" />
-
-    <RadioButton
-        android:id="@+id/rbChangeToDolar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Convertir a Dólares"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="423dp" />
-
-    <RadioButton
-        android:id="@+id/rbChangeToEuro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Convertir a Euros"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="471dp" />
-
-    <EditText
-        android:id="@+id/etConversionValueInput"
-        android:layout_width="161dp"
-        android:layout_height="43dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        tools:layout_editor_absoluteX="44dp"
-        tools:layout_editor_absoluteY="359dp" />
+        android:layout_marginTop="24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

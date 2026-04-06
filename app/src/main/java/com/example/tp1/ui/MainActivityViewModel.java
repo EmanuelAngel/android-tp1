@@ -1,4 +1,4 @@
-package com.example.tp1;
+package com.example.tp1.ui;
 
 import android.app.Application;
 
@@ -7,12 +7,17 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.tp1.models.ConversionModel;
+
 public class MainActivityViewModel extends AndroidViewModel {
     private Double conversionValue = 1.16;
     private MutableLiveData<Double> conversionMutable;
+    private ConversionModel conversionModel;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
+
+        conversionModel = new ConversionModel();
     }
 
     public LiveData<Double> getConversionMutable() {
@@ -32,21 +37,13 @@ public class MainActivityViewModel extends AndroidViewModel {
         if (toEuros) {
             if (amountDolars.isEmpty()) return;
             double dolars = Double.parseDouble(amountDolars);
-            result = convertToEuros(dolars, changeRate);
+            result = conversionModel.convertToEuros(dolars, changeRate);
         } else {
             if (amountEuros.isEmpty()) return;
             double euros = Double.parseDouble(amountEuros);
-            result = convertToDolars(euros, changeRate);
+            result = conversionModel.convertToDolars(euros, changeRate);
         }
 
         conversionMutable.setValue(result);
-    }
-
-    public double convertToEuros(double dolars, double changeRate) {
-        return dolars * changeRate;
-    }
-
-    public double convertToDolars(double euros, double changeRate) {
-        return euros / changeRate;
     }
 }

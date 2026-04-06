@@ -1,6 +1,6 @@
 package com.example.tp1.models;
 
-public class ConvertionModel {
+public class ConversionModel {
     public double convertToEuros(double dolars, double changeRate) {
         return dolars * changeRate;
     }

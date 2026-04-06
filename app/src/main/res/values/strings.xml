@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">tp1</string>
+    <string name="main_title">Conversor de Monedas</string>
+    <string name="dollars">Dólares:</string>
+    <string name="euros">Euros:</string>
+    <string name="conversion_value_label">Valor de conversión:</string>
+    <string name="one_dollar">1$ =</string>
+    <string name="conversion_example">Ej: 0.92</string>
+    <string name="change_rate">Cambiar valor</string>
+    <string name="convert_to_dollars">Convertir a Dólares.</string>
+    <string name="convert_to_euros">Convertir a Euros.</string>
+    <string name="convert">Convertir</string>
 </resources>
